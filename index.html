@@ -1,1 +1,352 @@
-inde
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alex Rivera — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0e14;
+    --panel: #10151c;
+    --panel-2: #0d1219;
+    --border: #1f2a37;
+    --text: #d5dce3;
+    --muted: #6b7684;
+    --muted-2: #4c5563;
+    --keyword: #b294f0;
+    --string: #6bcf9f;
+    --func: #7cb7f5;
+    --comment: #4c5563;
+    --number: #e3b341;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+  }
+  ::selection{ background:var(--keyword); color:#0a0e14; }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  a{ color:inherit; }
+
+  .editor{
+    max-width:920px;
+    margin:40px auto 100px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--panel);
+    box-shadow: 0 40px 80px -30px rgba(0,0,0,0.6);
+  }
+
+  /* Window chrome */
+  .titlebar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 16px;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--border);
+  }
+  .dot{ width:11px; height:11px; border-radius:50%; }
+  .dot.red{ background:#ff5f57; }
+  .dot.yellow{ background:#febc2e; }
+  .dot.green{ background:#28c840; }
+  .titlebar-name{
+    margin-left:12px;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+
+  /* Tabs */
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    background:var(--panel-2);
+    border-bottom:1px solid var(--border);
+  }
+  .tab{
+    padding:10px 18px;
+    font-size:13px;
+    color:var(--muted);
+    white-space:nowrap;
+    border-right:1px solid var(--border);
+    cursor:pointer;
+    transition:.15s ease;
+    text-decoration:none;
+    display:block;
+  }
+  .tab:hover{ color:var(--text); background:rgba(255,255,255,0.02); }
+  .tab.active{ color:var(--text); background:var(--bg); border-bottom:2px solid var(--func); }
+
+  /* Code body */
+  .code{
+    display:flex;
+    background:var(--bg);
+  }
+  .gutter{
+    padding:28px 14px;
+    text-align:right;
+    color:var(--muted-2);
+    font-size:13px;
+    user-select:none;
+    border-right:1px solid var(--border);
+    min-width:44px;
+  }
+  .gutter div{ height:28px; }
+  .content{ padding:28px 28px 28px 24px; width:100%; overflow:hidden; }
+
+  section{ margin-bottom:56px; }
+  section:last-child{ margin-bottom:0; }
+
+  .kw{ color:var(--keyword); }
+  .fn{ color:var(--func); }
+  .str{ color:var(--string); }
+  .num{ color:var(--number); }
+  .cm{ color:var(--comment); }
+  .punct{ color:var(--muted); }
+
+  /* Hero */
+  .hero-line{ font-size:14px; margin-bottom:4px; }
+  .hero-title{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:800;
+    font-size:clamp(28px, 5vw, 44px);
+    margin:10px 0 6px;
+    letter-spacing:-0.5px;
+  }
+  .hero-title .kw{ font-size:0.5em; vertical-align: 2px; }
+  .cursor{
+    display:inline-block;
+    width:9px;
+    height:1.1em;
+    background:var(--func);
+    vertical-align:-3px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+  .hero-sub{
+    font-family:'Inter', sans-serif;
+    color:var(--muted);
+    font-size:15px;
+    max-width:520px;
+    margin:12px 0 22px;
+  }
+  .hero-links{ display:flex; gap:10px; flex-wrap:wrap; }
+  .btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    padding:9px 16px;
+    border-radius:6px;
+    border:1px solid var(--border);
+    text-decoration:none;
+    color:var(--text);
+    transition:.15s ease;
+  }
+  .btn:hover{ border-color:var(--func); color:var(--func); transform:translateY(-1px); }
+  .btn.primary{ background:var(--func); color:#0a0e14; border-color:var(--func); }
+  .btn.primary:hover{ opacity:.88; color:#0a0e14; }
+
+  h2.section-title{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:18px;
+  }
+  h2.section-title .num{ margin-right:6px; }
+
+  /* Experience */
+  .job{
+    padding:16px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .job:last-child{ border-bottom:none; padding-bottom:0; }
+  .job-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:6px;
+  }
+  .job-role{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:15px; }
+  .job-role .fn{ font-weight:700; }
+  .job-time{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted-2); }
+  .job-company{ color:var(--muted); font-size:13.5px; margin-bottom:8px; }
+  .job-desc{ font-size:14.5px; color:var(--text); opacity:0.9; }
+
+  /* Skills */
+  .skill-block{ margin-bottom:14px; }
+  .skill-key{ font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--keyword); margin-bottom:8px; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    padding:6px 11px;
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:5px;
+    color:var(--string);
+  }
+
+  /* Contact */
+  .contact-list{ display:flex; flex-direction:column; gap:10px; }
+  .contact-row{
+    display:flex; align-items:center; gap:10px;
+    font-size:14.5px;
+  }
+  .contact-row .fn{ min-width:70px; }
+  .contact-row a{ color:var(--string); text-decoration:none; }
+  .contact-row a:hover{ text-decoration:underline; }
+
+  footer{
+    text-align:center;
+    color:var(--muted-2);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    padding:30px 20px 10px;
+  }
+
+  @media (max-width: 600px){
+    .gutter{ display:none; }
+    .editor{ margin:0; border-radius:0; border-left:none; border-right:none; }
+    .content{ padding:22px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="editor">
+  <div class="titlebar">
+    <span class="dot red"></span>
+    <span class="dot yellow"></span>
+    <span class="dot green"></span>
+    <span class="titlebar-name mono">alex-rivera-cv — index.html</span>
+  </div>
+
+  <div class="tabs">
+    <a href="#about" class="tab active mono">about.js</a>
+    <a href="#experience" class="tab mono">experience.js</a>
+    <a href="#skills" class="tab mono">skills.js</a>
+    <a href="#projects" class="tab mono">projects.js</a>
+    <a href="#contact" class="tab mono">contact.js</a>
+  </div>
+
+  <div class="code">
+    <div class="gutter mono">
+      <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div>
+      <div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div>
+      <div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div>
+      <div>31</div><div>32</div><div>33</div><div>34</div><div>35</div><div>36</div><div>37</div><div>38</div><div>39</div><div>40</div>
+    </div>
+
+    <div class="content">
+
+      <section id="about">
+        <div class="hero-line mono"><span class="kw">const</span> <span class="fn">engineer</span> <span class="punct">=</span> <span class="kw">new</span> <span class="fn">Engineer</span><span class="punct">(</span><span class="str">"Alex Rivera"</span><span class="punct">);</span></div>
+        <div class="hero-line mono cm">// full-stack software engineer, 6 yrs experience</div>
+        <h1 class="hero-title">Alex Rivera<span class="cursor"></span></h1>
+        <p class="hero-sub">I build fast, reliable products end-to-end — from database schema to pixel-perfect UI. Currently shipping backend systems in Go and frontend in React/TypeScript.</p>
+        <div class="hero-links">
+          <a href="#contact" class="btn primary">Get in touch</a>
+          <a href="#" class="btn">Download résumé.pdf</a>
+          <a href="#projects" class="btn">View projects</a>
+        </div>
+      </section>
+
+      <section id="experience">
+        <h2 class="section-title"><span class="num">02</span>experience.js</h2>
+
+        <div class="job">
+          <div class="job-head">
+            <span class="job-role mono">Senior Software Engineer <span class="fn">@ Northlane Systems</span></span>
+            <span class="job-time">2023 — Present</span>
+          </div>
+          <div class="job-desc">Led the migration of a monolith to microservices, cutting p95 API latency by 40%. Mentored a team of 4 engineers and owned the platform's CI/CD pipeline.</div>
+        </div>
+
+        <div class="job">
+          <div class="job-head">
+            <span class="job-role mono">Software Engineer <span class="fn">@ Vector Labs</span></span>
+            <span class="job-time">2020 — 2023</span>
+          </div>
+          <div class="job-desc">Built and maintained customer-facing dashboards used by 50k+ monthly users. Introduced automated testing that reduced regression bugs by 60%.</div>
+        </div>
+
+        <div class="job">
+          <div class="job-head">
+            <span class="job-role mono">Junior Developer <span class="fn">@ Fieldstone Studio</span></span>
+            <span class="job-time">2018 — 2020</span>
+          </div>
+          <div class="job-desc">Developed internal tooling and REST APIs. Collaborated closely with design to ship a full product redesign in 3 months.</div>
+        </div>
+      </section>
+
+      <section id="skills">
+        <h2 class="section-title"><span class="num">03</span>skills.js</h2>
+
+        <div class="skill-block">
+          <div class="skill-key">languages</div>
+          <div class="chips">
+            <span class="chip">JavaScript</span><span class="chip">TypeScript</span><span class="chip">Go</span><span class="chip">Python</span><span class="chip">SQL</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-key">frameworks</div>
+          <div class="chips">
+            <span class="chip">React</span><span class="chip">Node.js</span><span class="chip">Next.js</span><span class="chip">Express</span><span class="chip">FastAPI</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-key">infrastructure</div>
+          <div class="chips">
+            <span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">AWS</span><span class="chip">PostgreSQL</span><span class="chip">Redis</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects">
+        <h2 class="section-title"><span class="num">04</span>projects.js</h2>
+
+        <div class="job">
+          <div class="job-head">
+            <span class="job-role mono">Ledger — <span class="fn">expense tracking API</span></span>
+            <span class="job-time">open source</span>
+          </div>
+          <div class="job-desc">A lightweight double-entry accounting engine written in Go, with a plugin system for custom reporting.</div>
+        </div>
+
+        <div class="job">
+          <div class="job-head">
+            <span class="job-role mono">Pulse — <span class="fn">realtime status dashboard</span></span>
+            <span class="job-time">side project</span>
+          </div>
+          <div class="job-desc">A self-hosted uptime monitor with WebSocket-powered live updates and a component-based status page.</div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <h2 class="section-title"><span class="num">05</span>contact.js</h2>
+        <div class="contact-list mono">
+          <div class="contact-row"><span class="fn">email</span><a href="mailto:alex.rivera@example.com">alex.rivera@example.com</a></div>
+          <div class="contact-row"><span class="fn">github</span><a href="#">github.com/alexrivera</a></div>
+          <div class="contact-row"><span class="fn">linkedin</span><a href="#">linkedin.com/in/alexrivera</a></div>
+          <div class="contact-row"><span class="fn">location</span><span class="str">Remote — GMT-5</span></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<footer>/* this is placeholder content — swap it out with your own. */</footer>
+
+</body>
+</html>
