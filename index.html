@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alex Rivera — Software Engineer</title>
+<title>Premananda — Econometrics & Quantitative Research</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -31,11 +31,10 @@
   }
   ::selection{ background:var(--keyword); color:#0a0e14; }
   .mono{ font-family:'JetBrains Mono', monospace; }
-
   a{ color:inherit; }
 
   .editor{
-    max-width:920px;
+    max-width:960px;
     margin:40px auto 100px;
     border:1px solid var(--border);
     border-radius:10px;
@@ -44,7 +43,6 @@
     box-shadow: 0 40px 80px -30px rgba(0,0,0,0.6);
   }
 
-  /* Window chrome */
   .titlebar{
     display:flex;
     align-items:center;
@@ -57,13 +55,8 @@
   .dot.red{ background:#ff5f57; }
   .dot.yellow{ background:#febc2e; }
   .dot.green{ background:#28c840; }
-  .titlebar-name{
-    margin-left:12px;
-    font-size:12.5px;
-    color:var(--muted);
-  }
+  .titlebar-name{ margin-left:12px; font-size:12.5px; color:var(--muted); }
 
-  /* Tabs */
   .tabs{
     display:flex;
     overflow-x:auto;
@@ -84,11 +77,7 @@
   .tab:hover{ color:var(--text); background:rgba(255,255,255,0.02); }
   .tab.active{ color:var(--text); background:var(--bg); border-bottom:2px solid var(--func); }
 
-  /* Code body */
-  .code{
-    display:flex;
-    background:var(--bg);
-  }
+  .code{ display:flex; background:var(--bg); }
   .gutter{
     padding:28px 14px;
     text-align:right;
@@ -120,13 +109,9 @@
     margin:10px 0 6px;
     letter-spacing:-0.5px;
   }
-  .hero-title .kw{ font-size:0.5em; vertical-align: 2px; }
   .cursor{
-    display:inline-block;
-    width:9px;
-    height:1.1em;
-    background:var(--func);
-    vertical-align:-3px;
+    display:inline-block; width:9px; height:1.1em;
+    background:var(--func); vertical-align:-3px;
     animation: blink 1s steps(1) infinite;
   }
   @keyframes blink{ 50%{ opacity:0; } }
@@ -134,7 +119,7 @@
     font-family:'Inter', sans-serif;
     color:var(--muted);
     font-size:15px;
-    max-width:520px;
+    max-width:600px;
     margin:12px 0 22px;
   }
   .hero-links{ display:flex; gap:10px; flex-wrap:wrap; }
@@ -162,25 +147,48 @@
   }
   h2.section-title .num{ margin-right:6px; }
 
-  /* Experience */
-  .job{
-    padding:16px 0;
-    border-bottom:1px solid var(--border);
-  }
+  /* Projects */
+  .job{ padding:16px 0; border-bottom:1px solid var(--border); }
   .job:last-child{ border-bottom:none; padding-bottom:0; }
   .job-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    flex-wrap:wrap;
-    gap:6px;
-    margin-bottom:6px;
+    display:flex; justify-content:space-between; align-items:baseline;
+    flex-wrap:wrap; gap:6px; margin-bottom:2px;
   }
   .job-role{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:15px; }
   .job-role .fn{ font-weight:700; }
-  .job-time{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted-2); }
-  .job-company{ color:var(--muted); font-size:13.5px; margin-bottom:8px; }
-  .job-desc{ font-size:14.5px; color:var(--text); opacity:0.9; }
+  .job-time{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted-2); white-space:nowrap; }
+  .job-meta{ font-family:'JetBrains Mono', monospace; color:var(--muted); font-size:12.5px; margin-bottom:10px; }
+  .job-meta a{ color:var(--string); text-decoration:none; }
+  .job-meta a:hover{ text-decoration:underline; }
+  .job-summary{ font-size:14.5px; color:var(--text); opacity:0.92; margin-bottom:10px; }
+  .job-bullets{ list-style:none; margin:0 0 12px; padding:0; }
+  .job-bullets li{
+    font-size:14px; color:var(--text); opacity:0.9;
+    padding-left:16px; position:relative; margin-bottom:7px;
+  }
+  .job-bullets li::before{
+    content:"›"; position:absolute; left:0; color:var(--func); font-weight:700;
+  }
+  .job-bullets b{ color:var(--text); font-weight:600; }
+  .job-tech{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    color:var(--number);
+    opacity:0.85;
+  }
+  .job-tech .lbl{ color:var(--muted-2); margin-right:6px; }
+
+  .status-pill{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    padding:3px 9px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .status-pill.live{ color:var(--string); border-color:var(--string); }
+  .status-pill.progress{ color:var(--number); border-color:var(--number); }
 
   /* Skills */
   .skill-block{ margin-bottom:14px; }
@@ -196,22 +204,30 @@
     color:var(--string);
   }
 
+  /* Portfolio table */
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:8px; }
+  table{ width:100%; border-collapse:collapse; font-family:'JetBrains Mono', monospace; font-size:12.5px; }
+  thead th{
+    text-align:left; padding:10px 14px;
+    background:var(--panel-2); color:var(--muted);
+    font-weight:600; border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  tbody td{ padding:10px 14px; border-bottom:1px solid var(--border); color:var(--text); }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover{ background:rgba(255,255,255,0.02); }
+
   /* Contact */
   .contact-list{ display:flex; flex-direction:column; gap:10px; }
-  .contact-row{
-    display:flex; align-items:center; gap:10px;
-    font-size:14.5px;
-  }
+  .contact-row{ display:flex; align-items:center; gap:10px; font-size:14.5px; }
   .contact-row .fn{ min-width:70px; }
   .contact-row a{ color:var(--string); text-decoration:none; }
   .contact-row a:hover{ text-decoration:underline; }
 
   footer{
-    text-align:center;
-    color:var(--muted-2);
+    text-align:center; color:var(--muted-2);
     font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    padding:30px 20px 10px;
+    font-size:12px; padding:30px 20px 10px;
   }
 
   @media (max-width: 600px){
@@ -228,14 +244,16 @@
     <span class="dot red"></span>
     <span class="dot yellow"></span>
     <span class="dot green"></span>
-    <span class="titlebar-name mono">alex-rivera-cv — index.html</span>
+    <span class="titlebar-name mono">premananda — index.html</span>
   </div>
 
   <div class="tabs">
     <a href="#about" class="tab active mono">about.js</a>
-    <a href="#experience" class="tab mono">experience.js</a>
-    <a href="#skills" class="tab mono">skills.js</a>
+    <a href="#current" class="tab mono">current.js</a>
+    <a href="#research" class="tab mono">research.js</a>
     <a href="#projects" class="tab mono">projects.js</a>
+    <a href="#skills" class="tab mono">skills.js</a>
+    <a href="#portfolio" class="tab mono">portfolio.js</a>
     <a href="#contact" class="tab mono">contact.js</a>
   </div>
 
@@ -245,100 +263,163 @@
       <div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div>
       <div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div>
       <div>31</div><div>32</div><div>33</div><div>34</div><div>35</div><div>36</div><div>37</div><div>38</div><div>39</div><div>40</div>
+      <div>41</div><div>42</div><div>43</div><div>44</div><div>45</div><div>46</div><div>47</div><div>48</div><div>49</div><div>50</div>
     </div>
 
     <div class="content">
 
+      <!-- ABOUT -->
       <section id="about">
-        <div class="hero-line mono"><span class="kw">const</span> <span class="fn">engineer</span> <span class="punct">=</span> <span class="kw">new</span> <span class="fn">Engineer</span><span class="punct">(</span><span class="str">"Alex Rivera"</span><span class="punct">);</span></div>
-        <div class="hero-line mono cm">// full-stack software engineer, 6 yrs experience</div>
-        <h1 class="hero-title">Alex Rivera<span class="cursor"></span></h1>
-        <p class="hero-sub">I build fast, reliable products end-to-end — from database schema to pixel-perfect UI. Currently shipping backend systems in Go and frontend in React/TypeScript.</p>
+        <div class="hero-line mono"><span class="kw">const</span> <span class="fn">researcher</span> <span class="punct">=</span> <span class="kw">new</span> <span class="fn">Researcher</span><span class="punct">(</span><span class="str">"Premananda"</span><span class="punct">);</span></div>
+        <div class="hero-line mono cm">// econometrics, applied cryptography, autonomous systems</div>
+        <h1 class="hero-title">Premananda<span class="cursor"></span></h1>
+        <p class="hero-sub">Working toward econometrics and quantitative finance, with a research process built on time-series methodology — stationarity testing, lagged cross-correlation, Granger causality, and cointegration. Also builds production systems spanning autonomous-systems architecture, applied cryptography, and low-resource NLP.</p>
         <div class="hero-links">
           <a href="#contact" class="btn primary">Get in touch</a>
-          <a href="#" class="btn">Download résumé.pdf</a>
-          <a href="#projects" class="btn">View projects</a>
+          <a href="https://github.com/premananda-cloud" target="_blank" rel="noopener" class="btn">github.com/premananda-cloud</a>
+          <a href="#current" class="btn">Current project</a>
         </div>
       </section>
 
-      <section id="experience">
-        <h2 class="section-title"><span class="num">02</span>experience.js</h2>
+      <!-- CURRENT PROJECT -->
+      <section id="current">
+        <h2 class="section-title"><span class="num">02</span>current.js</h2>
 
         <div class="job">
           <div class="job-head">
-            <span class="job-role mono">Senior Software Engineer <span class="fn">@ Northlane Systems</span></span>
-            <span class="job-time">2023 — Present</span>
+            <span class="job-role mono">Agere Autonomous Navigation Stack <span class="fn">— Backseat Driver Model</span></span>
+            <span class="status-pill progress">in progress</span>
           </div>
-          <div class="job-desc">Led the migration of a monolith to microservices, cutting p95 API latency by 40%. Mentored a team of 4 engineers and owned the platform's CI/CD pipeline.</div>
-        </div>
-
-        <div class="job">
-          <div class="job-head">
-            <span class="job-role mono">Software Engineer <span class="fn">@ Vector Labs</span></span>
-            <span class="job-time">2020 — 2023</span>
-          </div>
-          <div class="job-desc">Built and maintained customer-facing dashboards used by 50k+ monthly users. Introduced automated testing that reduced regression bugs by 60%.</div>
-        </div>
-
-        <div class="job">
-          <div class="job-head">
-            <span class="job-role mono">Junior Developer <span class="fn">@ Fieldstone Studio</span></span>
-            <span class="job-time">2018 — 2020</span>
-          </div>
-          <div class="job-desc">Developed internal tooling and REST APIs. Collaborated closely with design to ship a full product redesign in 3 months.</div>
+          <div class="job-meta">AI-Supervised Autonomous Control Architecture for PX4 Drones</div>
+          <ul class="job-bullets">
+            <li><b>System architecture:</b> designed a formal three-layer separation of responsibilities — AI as strategic advisor, a tactical middleware layer, and PX4 as the real-time flight executor — bridged via ROS 2 and uXRCE-DDS.</li>
+            <li><b>Ground-link-loss decision framework:</b> authored phase-dependent autonomy rules (preflight, transit, active task, target-detected, return-to-base) and a graduated reconnection timeout ladder, so the vehicle degrades gracefully instead of on a single connect/disconnect threshold.</li>
+            <li><b>Work Index energy-margin model:</b> specified a continuous flight-minutes accounting model (task completion vs. return-to-base vs. safe landing vs. post-landing beacon reserve) that governs when the vehicle must abort, return, or land immediately — with locatability preserved as the top priority.</li>
+            <li><b>Safety-first scoping:</b> target/candidate detections trigger loiter-and-hold rather than autonomous action, even at medium confidence, since the cost of a false positive outweighs the cost of an unnecessary loiter.</li>
+          </ul>
+          <div class="job-tech"><span class="lbl">tech:</span>ROS 2 · PX4 · uXRCE-DDS · System Architecture · Decision Modeling</div>
         </div>
       </section>
 
-      <section id="skills">
-        <h2 class="section-title"><span class="num">03</span>skills.js</h2>
+      <!-- RESEARCH -->
+      <section id="research">
+        <h2 class="section-title"><span class="num">03</span>research.js</h2>
 
-        <div class="skill-block">
-          <div class="skill-key">languages</div>
-          <div class="chips">
-            <span class="chip">JavaScript</span><span class="chip">TypeScript</span><span class="chip">Go</span><span class="chip">Python</span><span class="chip">SQL</span>
+        <div class="job">
+          <div class="job-head">
+            <span class="job-role mono">Interstate Corn Price Concurrency <span class="fn">Iowa vs. Ohio, 2015–2026</span></span>
+            <span class="job-time">independent research</span>
           </div>
+          <div class="job-meta"><a href="https://github.com/premananda-cloud/price_latency" target="_blank" rel="noopener">github.com/premananda-cloud/price_latency</a></div>
+          <div class="job-summary">A reproducible econometric study of short-run synchronization and long-run equilibrium between two major U.S. corn markets, built on 137 months of USDA NASS data.</div>
+          <ul class="job-bullets">
+            <li><b>Data pivot, documented:</b> moved from an annual-only commodity source to the NASS monthly series after empirically testing which commodities and geographies actually supported the question.</li>
+            <li><b>Full methodology chain:</b> ADF stationarity testing → time-lagged cross-correlation on returns → Granger causality → Engle-Granger cointegration on levels → Zivot-Andrews structural break test.</li>
+            <li><b>Headline result:</b> same-month price synchronization between Iowa and Ohio (k*=0, ρ=0.84), stable across a train/holdout backtest, with Iowa leading Ohio in Granger causality.</li>
+            <li><b>Reported a genuinely mixed long-run finding:</b> a rolling 60-month cointegration test shows the relationship holds in only 26% of windows — strong short-run co-movement without robust long-run equilibrium.</li>
+            <li><b>Caught and flagged</b> an unverified causal narrative from an earlier draft before it entered the paper.</li>
+          </ul>
+          <div class="job-tech"><span class="lbl">tech:</span>Time-Series Econometrics · Granger Causality · Cointegration · Bootstrap Inference · Python / statsmodels · USDA NASS API</div>
         </div>
-        <div class="skill-block">
-          <div class="skill-key">frameworks</div>
-          <div class="chips">
-            <span class="chip">React</span><span class="chip">Node.js</span><span class="chip">Next.js</span><span class="chip">Express</span><span class="chip">FastAPI</span>
+
+        <div class="job">
+          <div class="job-head">
+            <span class="job-role mono">Currently exploring</span>
           </div>
-        </div>
-        <div class="skill-block">
-          <div class="skill-key">infrastructure</div>
-          <div class="chips">
-            <span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">AWS</span><span class="chip">PostgreSQL</span><span class="chip">Redis</span>
-          </div>
+          <ul class="job-bullets">
+            <li><b>Latency Arbitrage &amp; Trusted Execution Environments (TEE)</b> — investigating information-latency effects on price discovery and the role of TEEs in execution-layer market infrastructure. <i>In progress.</i></li>
+            <li><b>Fama-French Factor Model Replication</b> — replicating the three-factor asset pricing model as a foundation for further empirical asset-pricing work. <i>In progress.</i></li>
+          </ul>
         </div>
       </section>
 
+      <!-- PROJECTS -->
       <section id="projects">
         <h2 class="section-title"><span class="num">04</span>projects.js</h2>
 
         <div class="job">
           <div class="job-head">
-            <span class="job-role mono">Ledger — <span class="fn">expense tracking API</span></span>
-            <span class="job-time">open source</span>
+            <span class="job-role mono">BERT + SPST <span class="fn">Fake News Detector</span></span>
+            <span class="status-pill live">live</span>
           </div>
-          <div class="job-desc">A lightweight double-entry accounting engine written in Go, with a plugin system for custom reporting.</div>
+          <div class="job-meta">Training: Bert_training_via_SPST · Inference: fn_detector · Paper: BERT_SPST_Paper</div>
+          <ul class="job-bullets">
+            <li><b>Sequential Parameter Segment Training (SPST):</b> a novel fine-tuning method that splits BERT's parameter space into sequential segments, enabling full fine-tuning on a free Colab T4 GPU.</li>
+            <li><b>Results:</b> 97.52% accuracy, 0.9981 AUC on fake-news classification.</li>
+            <li><b>Deployment:</b> shipped as a live web app with attention-based explainability.</li>
+          </ul>
+          <div class="job-tech"><span class="lbl">tech:</span>BERT · Novel Method (SPST) · Low-Resource ML · HuggingFace Spaces</div>
         </div>
 
         <div class="job">
           <div class="job-head">
-            <span class="job-role mono">Pulse — <span class="fn">realtime status dashboard</span></span>
-            <span class="job-time">side project</span>
+            <span class="job-role mono">MedLedger + CypherAegis <span class="fn">Healthcare Security</span></span>
+            <span class="job-time">Hack4Humanity 2026 · Team Praxis</span>
           </div>
-          <div class="job-desc">A self-hosted uptime monitor with WebSocket-powered live updates and a component-based status page.</div>
+          <div class="job-meta">MedLedger · CypherAegis</div>
+          <ul class="job-bullets">
+            <li><b>Zero-knowledge sharing model:</b> a patient-controlled medical record vault where the server stores only ciphertext it is mathematically unable to decrypt — no plaintext record, private key, or data-encryption key ever reaches the backend.</li>
+            <li><b>Two-layer security:</b> a conventional email/password/TOTP account gate, separate from an Ed25519/X25519 vault keypair generated client-side and never transmitted — so a full server compromise still yields no decryptable data.</li>
+            <li><b>CypherAegis:</b> built the underlying cryptographic primitives (ECDSA, Shamir secret sharing) as a reusable library shared across projects rather than duplicated per-app.</li>
+            <li><b>Backend:</b> async FastAPI + PostgreSQL (SQLAlchemy 2.0 / asyncpg), Argon2id password hashing, JWT auth, TOTP 2FA, Flyway-managed migrations, Docker Compose deployment; API live on Render with a 112-file test suite across auth, database, middleware, and services.</li>
+          </ul>
+          <div class="job-tech"><span class="lbl">tech:</span>P-256 / ECIES · AES-GCM · Ed25519 / X25519 · FastAPI · PostgreSQL · ECDSA · Shamir Secret Sharing · Docker</div>
         </div>
       </section>
 
+      <!-- SKILLS -->
+      <section id="skills">
+        <h2 class="section-title"><span class="num">05</span>skills.js</h2>
+
+        <div class="skill-block">
+          <div class="skill-key">languages</div>
+          <div class="chips"><span class="chip">Python</span><span class="chip">SQL</span></div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-key">research / quant</div>
+          <div class="chips">
+            <span class="chip">statsmodels</span><span class="chip">time-series econometrics</span><span class="chip">Granger causality</span><span class="chip">cointegration</span><span class="chip">bootstrap inference</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-key">ml / nlp</div>
+          <div class="chips"><span class="chip">BERT</span><span class="chip">HuggingFace</span><span class="chip">low-resource fine-tuning</span></div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-key">systems &amp; crypto</div>
+          <div class="chips">
+            <span class="chip">FastAPI</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span><span class="chip">JWT / Argon2id / TOTP</span><span class="chip">ECDSA</span><span class="chip">ECIES</span><span class="chip">AES-GCM</span><span class="chip">Ed25519 / X25519</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-key">autonomy / robotics</div>
+          <div class="chips"><span class="chip">ROS 2</span><span class="chip">PX4</span><span class="chip">uXRCE-DDS</span></div>
+        </div>
+      </section>
+
+      <!-- PORTFOLIO -->
+      <section id="portfolio">
+        <h2 class="section-title"><span class="num">06</span>portfolio.js</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Project</th><th>Domain</th><th>Key Tech</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Agere — Backseat Driver Model</td><td>Autonomous Systems / Robotics</td><td>ROS 2, PX4, uXRCE-DDS</td><td>In Progress</td></tr>
+              <tr><td>price_latency</td><td>Econometrics / Quant Research</td><td>Python, statsmodels, USDA NASS API</td><td>GitHub</td></tr>
+              <tr><td>Bert_training_via_SPST / fn_detector</td><td>Low-Resource NLP</td><td>BERT, SPST, Colab T4</td><td>Live ✓</td></tr>
+              <tr><td>MedLedger + CypherAegis</td><td>Healthcare Security</td><td>P-256, AES-GCM, ECDSA</td><td>GitHub</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
       <section id="contact">
-        <h2 class="section-title"><span class="num">05</span>contact.js</h2>
+        <h2 class="section-title"><span class="num">07</span>contact.js</h2>
         <div class="contact-list mono">
-          <div class="contact-row"><span class="fn">email</span><a href="mailto:alex.rivera@example.com">alex.rivera@example.com</a></div>
-          <div class="contact-row"><span class="fn">github</span><a href="#">github.com/alexrivera</a></div>
-          <div class="contact-row"><span class="fn">linkedin</span><a href="#">linkedin.com/in/alexrivera</a></div>
-          <div class="contact-row"><span class="fn">location</span><span class="str">Remote — GMT-5</span></div>
+          <div class="contact-row"><span class="fn">github</span><a href="https://github.com/premananda-cloud" target="_blank" rel="noopener">github.com/premananda-cloud</a></div>
         </div>
       </section>
 
@@ -346,7 +427,7 @@
   </div>
 </div>
 
-<footer>/* this is placeholder content — swap it out with your own. */</footer>
+<footer>/* Premananda — econometrics, cryptography, autonomous systems. */</footer>
 
 </body>
 </html>
