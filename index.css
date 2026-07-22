@@ -1,0 +1,424 @@
+/* ========================================
+   VARIABLES
+   ======================================== */
+:root {
+  --forest: #01200F;
+  --blue:   #748CAB;
+  --cream:  #FEFAE0;
+  --sage:   #6B7D6B;
+  --card:   #FFFDF3;
+  --line:   #E4DCB8;
+
+  --tag-progress-bg:   #EFE7C8;
+  --tag-progress-text: #5A4B0E;
+  --tag-live-bg:       #DCE7DC;
+  --tag-live-text:     #2C4A2C;
+}
+
+/* ========================================
+   RESET & BASE
+   ======================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+html { scroll-padding-top: 24px; }
+
+body {
+  background: var(--cream);
+  color: var(--forest);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.65;
+  font-size: 16px;
+}
+
+::selection { background: var(--blue); color: var(--cream); }
+
+a { color: var(--forest); }
+
+/* ========================================
+   SKIP LINK
+   ======================================== */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--forest);
+  color: var(--cream);
+  padding: 8px 16px;
+  z-index: 100;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  border-radius: 0 0 4px 0;
+}
+.skip-link:focus { top: 0; }
+
+/* ========================================
+   LAYOUT
+   ======================================== */
+.wrap { max-width: 800px; margin: 0 auto; padding: 64px 28px 100px; }
+
+/* ========================================
+   HEADER
+   ======================================== */
+header { margin-bottom: 44px; }
+
+.name {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: clamp(30px, 5.2vw, 46px);
+  letter-spacing: -0.5px;
+  color: var(--forest);
+  line-height: 1.1;
+}
+
+.role-line {
+  margin-top: 10px;
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--forest);
+}
+.role-line .sep {
+  color: var(--blue);
+  margin: 0 8px;
+  font-weight: 700;
+}
+
+.lede {
+  margin-top: 16px;
+  max-width: 620px;
+  color: var(--forest);
+  opacity: 0.88;
+  font-size: 15px;
+}
+
+.header-links {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 1.5px solid var(--forest);
+  border-radius: 30px;
+  text-decoration: none;
+  color: var(--forest);
+  transition: .15s ease;
+}
+.pill-link.primary {
+  background: var(--forest);
+  color: var(--cream);
+}
+.pill-link:hover {
+  background: var(--forest);
+  color: var(--cream);
+}
+.pill-link.primary:hover { opacity: 0.85; }
+
+.rule {
+  height: 2px;
+  background: var(--forest);
+  margin-top: 36px;
+}
+
+/* ========================================
+   SECTIONS
+   ======================================== */
+section { margin-top: 44px; }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.section-num {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--blue);
+}
+
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 21px;
+  color: var(--forest);
+  letter-spacing: 0.2px;
+}
+
+.section-underline {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  margin-left: 6px;
+}
+
+/* ========================================
+   ENTRY CARDS
+   ======================================== */
+.entry {
+  padding: 20px 22px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 6px;
+  margin-bottom: 18px;
+}
+.entry:last-child { margin-bottom: 0; }
+
+.entry-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 4px;
+}
+
+.entry-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 17.5px;
+  color: var(--forest);
+}
+.entry-title .sub {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14.5px;
+  color: var(--sage);
+  margin-left: 4px;
+}
+
+.entry-tag {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.entry-tag.progress {
+  background: var(--tag-progress-bg);
+  color: var(--tag-progress-text);
+}
+.entry-tag.live {
+  background: var(--tag-live-bg);
+  color: var(--tag-live-text);
+}
+.entry-tag.plain {
+  color: var(--sage);
+  background: none;
+  padding-left: 0;
+}
+
+.entry-meta {
+  font-size: 13px;
+  color: var(--sage);
+  margin-bottom: 10px;
+}
+.entry-meta a {
+  color: var(--forest);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid var(--blue);
+}
+.entry-meta a:hover { color: var(--blue); }
+
+.entry-summary {
+  font-size: 14.5px;
+  color: var(--forest);
+  opacity: 0.9;
+  margin-bottom: 10px;
+}
+
+.entry ul {
+  list-style: none;
+  margin-bottom: 12px;
+}
+.entry ul li {
+  font-size: 14.5px;
+  color: var(--forest);
+  opacity: 0.92;
+  padding-left: 18px;
+  position: relative;
+  margin-bottom: 8px;
+}
+.entry ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  background: var(--blue);
+  border-radius: 50%;
+}
+.entry ul li b { font-weight: 700; color: var(--forest); }
+
+.tech-row {
+  font-size: 12.5px;
+  color: var(--sage);
+  font-weight: 500;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+}
+.tech-row .lbl {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--forest);
+  margin-right: 8px;
+  font-size: 11px;
+}
+
+/* Contact card variant */
+.contact-card { border-left-color: var(--forest); }
+.contact-meta { margin-bottom: 0; font-size: 14.5px; }
+.contact-meta p { margin-bottom: 6px; }
+.contact-meta p:last-child { margin-bottom: 0; }
+.email-note {
+  font-size: 12px;
+  color: var(--sage);
+  font-style: italic;
+}
+
+/* ========================================
+   SKILLS
+   ======================================== */
+.skill-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.skill-row:last-child { margin-bottom: 0; }
+
+.skill-label {
+  min-width: 150px;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--forest);
+  padding-top: 6px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1;
+}
+
+.chip {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 13px;
+  border: 1.3px solid var(--blue);
+  border-radius: 20px;
+  color: var(--forest);
+  background: var(--card);
+}
+
+/* ========================================
+   TABLE
+   ======================================== */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead th {
+  text-align: left;
+  padding: 12px 16px;
+  background: var(--forest);
+  color: var(--cream);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--forest);
+}
+tbody tr:nth-child(even) { background: var(--card); }
+tbody tr:last-child td { border-bottom: none; }
+
+/* ========================================
+   FOOTER
+   ======================================== */
+footer {
+  margin-top: 56px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  color: var(--sage);
+  font-size: 12.5px;
+}
+
+/* ========================================
+   DARK MODE
+   ======================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cream:  #0a1210;
+    --forest: #e8f0e8;
+    --card:   #111c18;
+    --line:   #1e332b;
+    --sage:   #8a9a8a;
+    --blue:   #8fa8c4;
+
+    --tag-progress-bg:   #2a2310;
+    --tag-progress-text: #d4c58a;
+    --tag-live-bg:       #1a2a1a;
+    --tag-live-text:     #a3c4a3;
+  }
+
+  .pill-link {
+    border-color: var(--forest);
+    color: var(--forest);
+  }
+  .pill-link:hover {
+    background: var(--forest);
+    color: var(--cream);
+  }
+  .pill-link.primary {
+    background: var(--forest);
+    color: var(--cream);
+  }
+  .pill-link.primary:hover { opacity: 0.85; }
+
+  .chip {
+    background: var(--card);
+    border-color: var(--blue);
+    color: var(--forest);
+  }
+}
+
+/* ========================================
+   MEDIA QUERIES
+   ======================================== */
+@media (max-width: 560px) {
+  .wrap { padding: 44px 18px 70px; }
+  .entry { padding: 16px; }
+  .skill-label { min-width: 100%; }
+}
