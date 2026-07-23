@@ -27,16 +27,30 @@
 html { scroll-padding-top: 24px; }
 
 body {
-  background: var(--cream);
+  background: radial-gradient(ellipse at 50% -10%, #FFFDF3 0%, var(--cream) 60%);
   color: var(--forest);
   font-family: 'Inter', sans-serif;
   line-height: 1.65;
   font-size: 16px;
+  min-height: 100vh;
 }
 
 ::selection { background: var(--blue); color: var(--cream); }
 
 a { color: var(--forest); }
+
+/* Accessible focus rings */
+*:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--sage); }
 
 /* ========================================
    SKIP LINK
@@ -59,7 +73,7 @@ a { color: var(--forest); }
 /* ========================================
    LAYOUT
    ======================================== */
-.wrap { max-width: 800px; margin: 0 auto; padding: 64px 28px 100px; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 64px 28px 100px; }
 
 /* ========================================
    HEADER
@@ -113,7 +127,7 @@ header { margin-bottom: 44px; }
   border-radius: 30px;
   text-decoration: none;
   color: var(--forest);
-  transition: .15s ease;
+  transition: transform 0.1s ease, background 0.15s ease, color 0.15s ease, opacity 0.15s ease;
 }
 .pill-link.primary {
   background: var(--forest);
@@ -124,11 +138,25 @@ header { margin-bottom: 44px; }
   color: var(--cream);
 }
 .pill-link.primary:hover { opacity: 0.85; }
+.pill-link:active { transform: scale(0.96); }
 
 .rule {
   height: 2px;
   background: var(--forest);
   margin-top: 36px;
+  position: relative;
+}
+.rule::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background: var(--blue);
+  border-radius: 50%;
+  opacity: 0.6;
 }
 
 /* ========================================
@@ -148,6 +176,14 @@ section { margin-top: 44px; }
   font-weight: 600;
   font-size: 14px;
   color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  padding: 0 4px;
 }
 
 h2 {
@@ -175,8 +211,14 @@ h2 {
   border-left: 4px solid var(--blue);
   border-radius: 6px;
   margin-bottom: 18px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 .entry:last-child { margin-bottom: 0; }
+.entry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(1, 32, 15, 0.06);
+  border-color: #d4ccb0;
+}
 
 .entry-top {
   display: flex;
@@ -233,7 +275,23 @@ h2 {
   color: var(--forest);
   font-weight: 600;
   text-decoration: none;
-  border-bottom: 1px solid var(--blue);
+  position: relative;
+}
+.entry-meta a::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.entry-meta a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 .entry-meta a:hover { color: var(--blue); }
 
@@ -329,6 +387,13 @@ h2 {
   border-radius: 20px;
   color: var(--forest);
   background: var(--card);
+  transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+  cursor: default;
+}
+.chip:hover {
+  background: rgba(116, 140, 171, 0.12);
+  transform: translateY(-1px);
+  border-color: #5a7a9e;
 }
 
 /* ========================================
@@ -360,7 +425,11 @@ tbody td {
   border-bottom: 1px solid var(--line);
   color: var(--forest);
 }
+tbody tr {
+  transition: background 0.15s ease;
+}
 tbody tr:nth-child(even) { background: var(--card); }
+tbody tr:hover { background: rgba(116, 140, 171, 0.07); }
 tbody tr:last-child td { border-bottom: none; }
 
 /* ========================================
@@ -373,6 +442,18 @@ footer {
   text-align: center;
   color: var(--sage);
   font-size: 12.5px;
+  position: relative;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 1px;
+  background: var(--blue);
+  opacity: 0.4;
 }
 
 /* ========================================
@@ -393,6 +474,13 @@ footer {
     --tag-live-text:     #a3c4a3;
   }
 
+  body {
+    background: radial-gradient(ellipse at 50% -10%, #111c18 0%, var(--cream) 60%);
+  }
+
+  ::-webkit-scrollbar-thumb { background: #1e332b; }
+  ::-webkit-scrollbar-thumb:hover { background: #3a5248; }
+
   .pill-link {
     border-color: var(--forest);
     color: var(--forest);
@@ -411,6 +499,29 @@ footer {
     background: var(--card);
     border-color: var(--blue);
     color: var(--forest);
+  }
+  .chip:hover {
+    background: rgba(143, 168, 196, 0.15);
+    border-color: #6a8aaa;
+  }
+
+  .entry:hover {
+    box-shadow: 0 8px 28px rgba(232, 240, 232, 0.04);
+    border-color: #2a3d35;
+  }
+
+  tbody tr:hover {
+    background: rgba(143, 168, 196, 0.07);
+  }
+
+  .rule::after {
+    background: var(--blue);
+    opacity: 0.5;
+  }
+
+  footer::before {
+    background: var(--blue);
+    opacity: 0.3;
   }
 }
 
