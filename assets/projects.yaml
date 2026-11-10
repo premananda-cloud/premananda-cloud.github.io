@@ -1,0 +1,26 @@
+name: My project list
+version: 0.0.1
+edition: 2026
+projects:
+  - AI-ML:
+    - tittle: bert spst
+      start: 2026-01-05
+      end: 2026-03-31
+      repositories:
+        - bert via spst: https://github.com/premananda-cloud/Bert_training_via_SPST.git
+        - bert spst paper: https://github.com/premananda-cloud/BERT_SPST_Paper.git
+    - tittle: AGERE
+      start: 2026-08-25
+      end: ongoing
+      repositories:
+        - AGERE: https://github.com/premananda-cloud/AGERE
+        - AGERE_training: https://github.com/premananda-cloud/AGERE_training
+        - AGERE_sims: https://github.com/premananda-cloud/AGERE_sims
+  - Cryptography:
+      - tittle: cypheraegis
+        start: 2026-04-02
+        end: 2026-04-02
+        repositories:
+          cypheraegis: https://github.com/premananda-cloud/CypherAegis.git
+      - tittle: medledger
+        start:
