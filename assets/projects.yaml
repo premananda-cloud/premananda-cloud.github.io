@@ -23,4 +23,29 @@ projects:
         repositories:
           cypheraegis: https://github.com/premananda-cloud/CypherAegis.git
       - tittle: medledger
-        start:
+        start: 2026-06-18
+        end: 2026-07-15
+        repositories:
+          medledger: https://github.com/premananda-cloud/MedLedger.git
+      - tittle: envoix
+        start: 2026-06-29
+        end: ongoing  but on pause
+        repositories: https://github.com/Athelis-Systems/Envoi_X.git
+  - Production Applications:
+      - tittle: Campuswari
+        start: 2026-10-18
+        end: ongoing
+        repositories:
+          Campuswari: https://github.com/Stoic-Monkie/CampusWari.git
+  - Utilities:
+      - tittle: vin
+        start: 2026-11-05
+        end: ongoing
+        repositories:
+          vin: https://github.com/premananda-cloud/vin.git
+  - Econometrics:
+      - tittle: price-latency
+        start: 2026-07-30
+        end: 2026-09-25
+        repositories:
+          price-latency: https://github.com/premananda-cloud/price_latency.git
