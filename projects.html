@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Mayanglambam Premananda Singh</title>
+  <meta name="description" content="Live project list, loaded from projects.yaml." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌲</text></svg>" />
+
+  <!-- Page-specific additions only; everything else comes from index.css -->
+  <style>
+    :root { --bad-bg: #F1DAD3; --bad-text: #7A2A16; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bad-bg: #2E1812; --bad-text: #e0a898; }
+    }
+
+    button.pill-link, button.chip { font-family: inherit; cursor: pointer; }
+    button.pill-link { background: transparent; }
+    button.pill-link:disabled { opacity: .5; cursor: progress; }
+    button.chip[aria-pressed="true"] {
+      background: var(--forest); color: var(--cream); border-color: var(--forest);
+    }
+    .chip .count { opacity: .65; margin-left: 6px; font-weight: 500; }
+
+    .src-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+    .src-bar input {
+      flex: 1; min-width: 240px; font: inherit; font-size: 13.5px;
+      padding: 8px 14px; color: var(--forest); background: var(--card);
+      border: 1.5px solid var(--line); border-radius: 30px;
+    }
+    .src-bar input:focus-visible { border-color: var(--blue); }
+
+    #msg { margin-top: 14px; font-size: 13px; color: var(--sage); min-height: 1.4em; }
+    #msg.error { color: var(--bad-text); background: var(--bad-bg); padding: 8px 12px; border-radius: 6px; }
+
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 28px; }
+    .toolbar .spacer { flex: 1; }
+
+    details.issues {
+      margin-top: 16px; padding: 12px 16px; font-size: 13.5px;
+      background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    }
+    details.issues summary { cursor: pointer; font-weight: 600; }
+    details.issues ul { margin: 10px 0 0 18px; }
+    details.issues li { margin-bottom: 4px; }
+    .lvl-error { color: var(--bad-text); font-weight: 700; }
+    .lvl-warn  { color: var(--tag-progress-text); font-weight: 700; }
+
+    .repo-list { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 10px; border-top: 1px dashed var(--line); }
+    .repo {
+      display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600;
+      padding: 4px 11px; border: 1.3px solid var(--line); border-radius: 20px;
+      text-decoration: none; color: var(--forest); background: var(--card);
+    }
+    .repo:hover { border-color: var(--blue); }
+    .repo .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+    .repo[data-state="ok"] .dot { background: #3f8a3f; }
+    .repo[data-state="missing"] .dot { background: #c0452a; }
+    .repo[data-state="limited"] .dot { background: #c9a227; }
+    .repo .note { font-weight: 500; color: var(--sage); }
+
+    .empty { color: var(--sage); font-size: 14.5px; padding: 24px 0; }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <div class="wrap">
+    <header>
+      <div class="name">Projects</div>
+      <div class="role-line">Loaded live from <code>projects.yaml</code></div>
+      <p class="lede" id="meta">Fetching project data…</p>
+
+      <div class="header-links">
+        <a href="index.html" class="pill-link primary">← Back to portfolio</a>
+        <a href="https://github.com/premananda-cloud" target="_blank" rel="noopener noreferrer" class="pill-link">github.com/premananda-cloud</a>
+      </div>
+
+      <form class="src-bar" id="src-form">
+        <label for="src" class="skip-link" style="position:absolute;left:-9999px">YAML source URL</label>
+        <input id="src" name="src" type="text" inputmode="url" spellcheck="false"
+               placeholder="assets/projects.yaml or https://raw.githubusercontent.com/…" />
+        <button type="submit" class="pill-link">Load</button>
+      </form>
+      <div id="msg" role="status" aria-live="polite"></div>
+      <div class="rule"></div>
+    </header>
+
+    <main id="main">
+      <div class="toolbar" id="filters" role="group" aria-label="Filter by status"></div>
+      <div class="toolbar">
+        <button type="button" class="pill-link" id="check-btn" disabled>Check repositories</button>
+        <span id="check-summary" style="font-size:13px;color:var(--sage)"></span>
+      </div>
+      <div id="issues"></div>
+      <div id="areas"></div>
+    </main>
+
+    <footer>
+      Data from <span id="foot-src">projects.yaml</span> · rendered in the browser
+    </footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  <script>
+  (() => {
+    "use strict";
+
+    // ---------- config ----------
+    const DEFAULT_SRC = "assets/projects.yaml";
+    const STATUSES = ["ongoing", "paused", "planned", "completed"];
+    const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+    const TAG_CLASS = { ongoing: "progress", completed: "live", paused: "plain", planned: "plain" };
+
+    // ---------- helpers ----------
+    const $ = (id) => document.getElementById(id);
+
+    function h(tag, props = {}, ...kids) {
+      const e = document.createElement(tag);
+      for (const [k, v] of Object.entries(props)) {
+        if (v == null) continue;
+        if (k === "class") e.className = v;
+        else e.setAttribute(k, v);
+      }
+      for (const kid of kids.flat()) {
+        if (kid == null) continue;
+        e.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+      }
+      return e;
+    }
+
+    const fmtDate = (d) =>
+      d instanceof Date && !isNaN(d) ? d.toISOString().slice(0, 10)
+      : typeof d === "string" ? d : null;
+
+    const safeUrl = (u) => {
+      try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? u : null; }
+      catch { return null; }
+    };
+
+    const ghSlug = (u) => {
+      try {
+        const x = new URL(u);
+        if (x.hostname !== "github.com") return null;
+        const [owner, repo] = x.pathname.split("/").filter(Boolean);
+        return owner && repo ? `${owner}/${repo.replace(/\.git$/, "")}` : null;
+      } catch { return null; }
+    };
+
+    const label = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+    // ---------- state ----------
+    let data = null;
+    let filter = "all";
+
+    // ---------- validation ----------
+    function validate(doc) {
+      const issues = [];
+      const err = (m) => issues.push({ level: "error", msg: m });
+      const warn = (m) => issues.push({ level: "warn", msg: m });
+
+      if (!doc || typeof doc !== "object") { err("File is not a YAML mapping."); return issues; }
+      if (typeof doc.version !== "string") warn("`version` should be a quoted string.");
+      if (!Array.isArray(doc.areas)) { err("Missing `areas` list (is this a 1.x file?)."); return issues; }
+
+      const seen = new Map();
+      const claim = (id, where) => {
+        if (!SLUG.test(String(id))) warn(`${where}: id "${id}" is not a hyphen-slug.`);
+        if (seen.has(id)) err(`Duplicate id "${id}" (${seen.get(id)} and ${where}).`);
+        else seen.set(id, where);
+      };
+
+      doc.areas.forEach((a, i) => {
+        const aw = `area #${i + 1}`;
+        if (!a || typeof a !== "object") return err(`${aw} is not a mapping.`);
+        if (!a.id) err(`${aw}: missing id.`); else claim(a.id, `area "${a.id}"`);
+        if (!a.label) err(`${aw}: missing label.`);
+        if (!Array.isArray(a.projects)) return err(`${aw}: \`projects\` must be a list.`);
+
+        a.projects.forEach((p, j) => {
+          const pw = `${a.id || aw} / project #${j + 1}`;
+          if (!p || typeof p !== "object") return err(`${pw} is not a mapping.`);
+          if (!p.id) err(`${pw}: missing id.`); else claim(p.id, `project "${p.id}"`);
+          if (!p.title) err(`${pw}: missing title.`);
+          if (!(p.start instanceof Date)) err(`${pw}: \`start\` must be a YYYY-MM-DD date.`);
+          if (p.end != null && !(p.end instanceof Date)) err(`${pw}: \`end\` must be a date or null.`);
+          if (!STATUSES.includes(p.status)) err(`${pw}: status "${p.status}" is not one of ${STATUSES.join(", ")}.`);
+          else if (p.end instanceof Date && p.status !== "completed") warn(`${pw}: has an end date but status is "${p.status}".`);
+          else if (p.end == null && p.status === "completed") warn(`${pw}: status is completed but end is null.`);
+          if (p.start instanceof Date && p.end instanceof Date && p.end < p.start) err(`${pw}: end is before start.`);
+
+          if (p.repositories != null && !Array.isArray(p.repositories)) {
+            err(`${pw}: \`repositories\` must be a list.`);
+          } else {
+            (p.repositories || []).forEach((r, k) => {
+              const rw = `${pw} / repo #${k + 1}`;
+              if (!r || !r.name || !r.url) return err(`${rw}: needs both name and url.`);
+              if (!safeUrl(r.url)) err(`${rw}: invalid URL.`);
+              else if (/\.git$/.test(r.url)) warn(`${rw}: URL ends in .git.`);
+              else if (!r.url.startsWith("https://")) warn(`${rw}: URL is not HTTPS.`);
+            });
+          }
+        });
+      });
+      return issues;
+    }
+
+    function renderIssues(issues) {
+      const box = $("issues");
+      box.replaceChildren();
+      if (!issues.length) return;
+      const errors = issues.filter((i) => i.level === "error").length;
+      const warns = issues.length - errors;
+      const parts = [];
+      if (errors) parts.push(`${errors} error${errors > 1 ? "s" : ""}`);
+      if (warns) parts.push(`${warns} warning${warns > 1 ? "s" : ""}`);
+      box.append(
+        h("details", { class: "issues", open: errors ? "" : null },
+          h("summary", {}, `Data check: ${parts.join(", ")}`),
+          h("ul", {}, issues.map((i) =>
+            h("li", {}, h("span", { class: `lvl-${i.level}` }, i.level.toUpperCase()), " ", i.msg)))
+        )
+      );
+    }
+
+    // ---------- rendering ----------
+    function allProjects() {
+      return (data.areas || []).flatMap((a) => Array.isArray(a?.projects) ? a.projects.filter(Boolean) : []);
+    }
+
+    function renderFilters() {
+      const bar = $("filters");
+      bar.replaceChildren();
+      const all = allProjects();
+      const make = (key, text, n) => {
+        const b = h("button", { type: "button", class: "chip", "aria-pressed": String(filter === key) },
+          text, h("span", { class: "count" }, n));
+        b.addEventListener("click", () => { filter = key; renderFilters(); renderAreas(); });
+        return b;
+      };
+      bar.append(make("all", "All", all.length));
+      STATUSES.forEach((s) => {
+        const n = all.filter((p) => p.status === s).length;
+        if (n) bar.append(make(s, label(s), n));
+      });
+    }
+
+    function renderProject(p) {
+      const start = fmtDate(p.start) || "?";
+      const end = p.end == null ? "present" : fmtDate(p.end) || "?";
+      const entry = h("div", { class: "entry", id: p.id ? `proj-${p.id}` : null },
+        h("div", { class: "entry-top" },
+          h("div", { class: "entry-title" }, p.title || p.id || "Untitled"),
+          h("span", { class: `entry-tag ${TAG_CLASS[p.status] || "plain"}` }, p.status || "unknown")
+        ),
+        h("div", { class: "entry-meta" }, `${start} → ${end}`)
+      );
+
+      const repos = Array.isArray(p.repositories) ? p.repositories : [];
+      if (repos.length) {
+        entry.append(h("div", { class: "repo-list" }, repos.map((r) => {
+          const href = r && safeUrl(r.url);
+          if (!href) return h("span", { class: "repo", "data-state": "missing" },
+            h("span", { class: "dot" }), r?.name || "invalid repo");
+          return h("a", {
+            class: "repo", href, target: "_blank", rel: "noopener noreferrer",
+            "data-gh": ghSlug(href)
+          }, h("span", { class: "dot", "aria-hidden": "true" }), r.name || href, h("span", { class: "note" }));
+        })));
+      }
+      return entry;
+    }
+
+    function renderAreas() {
+      const root = $("areas");
+      root.replaceChildren();
+      let n = 0;
+      (data.areas || []).forEach((a) => {
+        if (!a || !Array.isArray(a.projects)) return;
+        const projs = a.projects.filter((p) => p && (filter === "all" || p.status === filter));
+        if (!projs.length) return;
+        n++;
+        const hid = `area-${a.id || n}`;
+        root.append(
+          h("section", { id: a.id || null, "aria-labelledby": hid },
+            h("div", { class: "section-head" },
+              h("span", { class: "section-num" }, String(n).padStart(2, "0")),
+              h("h2", { id: hid }, a.label || a.id || "Area"),
+              h("div", { class: "section-underline" })),
+            projs.map(renderProject))
+        );
+      });
+      if (!n) root.append(h("p", { class: "empty" }, "No projects match this filter."));
+      $("check-summary").textContent = "";
+    }
+
+    // ---------- repo check (GitHub API, on demand) ----------
+    async function checkRepos() {
+      const links = [...document.querySelectorAll("a.repo[data-gh]")].filter((a) => a.dataset.gh);
+      if (!links.length) return;
+      const btn = $("check-btn");
+      btn.disabled = true;
+      $("check-summary").textContent = `Checking ${links.length} repositories…`;
+      let ok = 0, missing = 0, limited = 0, stop = false;
+
+      await Promise.all(links.map(async (a) => {
+        const note = a.querySelector(".note");
+        if (stop) { a.dataset.state = "limited"; limited++; return; }
+        try {
+          const res = await fetch(`https://api.github.com/repos/${a.dataset.gh}`,
+            { headers: { Accept: "application/vnd.github+json" } });
+          if (res.ok) {
+            const j = await res.json();
+            a.dataset.state = "ok"; ok++;
+            const pushed = (j.pushed_at || "").slice(0, 10);
+            note.textContent = ` · ${j.archived ? "archived · " : ""}pushed ${pushed}`;
+          } else if (res.status === 404) {
+            a.dataset.state = "missing"; missing++;
+            note.textContent = " · not found / private";
+          } else {
+            stop = true; a.dataset.state = "limited"; limited++;
+          }
+        } catch { a.dataset.state = "limited"; limited++; }
+      }));
+
+      const bits = [`${ok} reachable`];
+      if (missing) bits.push(`${missing} not found or private`);
+      if (limited) bits.push(`${limited} unchecked (GitHub rate limit or network)`);
+      $("check-summary").textContent = bits.join(" · ");
+      btn.disabled = false;
+    }
+
+    // ---------- loading ----------
+    function setMsg(text, isError = false) {
+      const m = $("msg");
+      m.textContent = text;
+      m.className = isError ? "error" : "";
+    }
+
+    async function load(src) {
+      setMsg("Loading…");
+      $("check-btn").disabled = true;
+      try {
+        const res = await fetch(src, { cache: "no-cache" });
+        if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`.trim());
+        const doc = jsyaml.load(await res.text());
+
+        const issues = validate(doc);
+        renderIssues(issues);
+        if (!doc || !Array.isArray(doc.areas)) throw new Error("No `areas` list found in this file.");
+
+        data = doc;
+        filter = "all";
+        const total = allProjects().length;
+        $("meta").textContent =
+          `${total} projects across ${doc.areas.length} areas · schema ${doc.version ?? "?"}` +
+          (fmtDate(doc.updated) ? ` · updated ${fmtDate(doc.updated)}` : "");
+        $("foot-src").textContent = src;
+        setMsg("");
+        renderFilters();
+        renderAreas();
+        $("check-btn").disabled = false;
+      } catch (e) {
+        data = null;
+        $("areas").replaceChildren();
+        $("filters").replaceChildren();
+        $("meta").textContent = "Could not load project data.";
+        setMsg(`Failed to load ${src}: ${e.message}. If this is another site, it must allow CORS (raw.githubusercontent.com does).`, true);
+      }
+    }
+
+    // ---------- init ----------
+    const params = new URLSearchParams(location.search);
+    const src = params.get("src") || DEFAULT_SRC;
+    $("src").value = src;
+
+    $("src-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const v = $("src").value.trim() || DEFAULT_SRC;
+      const url = new URL(location.href);
+      if (v === DEFAULT_SRC) url.searchParams.delete("src"); else url.searchParams.set("src", v);
+      history.replaceState(null, "", url);
+      load(v);
+    });
+    $("check-btn").addEventListener("click", checkRepos);
+
+    if (typeof jsyaml === "undefined") setMsg("YAML parser failed to load (check your connection).", true);
+    else load(src);
+  })();
+  </script>
+</body>
+</html>
