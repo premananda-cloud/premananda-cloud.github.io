@@ -1,13 +1,22 @@
-# Mayanglambam Premananda Singh | Portfolio
-A personal portfolio showcasing work in Econometrics, Applied Cryptography, and Autonomous Systems Architecture.
+# Projects Portfolio: Docs
 
-## 🚀 Live Site
-[View Portfolio](https://premananda-cloud.github.io/)
+Documents the project data model and the tooling that maintains it.
 
-## 🛠️ Tech Stack
-- **Frontend:** Vanilla HTML5, CSS3 (Custom Properties, Grid/Flexbox), Vanilla JavaScript
-- **Design:** Fraunces & Inter typography, custom Forest/Sage color palette
-- **Features:** Dark mode toggling, IntersectionObserver scroll reveals, dynamic typing effect
+| File | Purpose |
+|------|---------|
+| [`yaml-structure.md`](./yaml-structure.md) | Schema reference for `assets/projects.yaml` |
+| [`cli.md`](./cli.md) | Reference for `scripts/add_project.py` |
 
-## 📂 Hosting & CI/CD
-Hosted via GitHub Pages with automated deployments through GitHub Actions.
+## How it fits together
+
+- `assets/projects.yaml` is the single source of truth, grouped by area.
+- `scripts/add_project.py` appends projects to it safely (no duplicate ids,
+  consistent `status`/`end`).
+- `index.html`, `index.css` and `main.py` render the portfolio from the YAML.
+
+## Quick start
+
+```bash
+./scripts/add_project.py --list   # show everything, no writes
+./scripts/add_project.py          # add a project interactively
+```
