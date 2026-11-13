@@ -1,0 +1,96 @@
+version: "2.0.0"
+updated: 2026-11-12
+
+areas:
+  - id: ai-ml
+    label: AI / ML
+    projects:
+      - id: bert-spst
+        title: BERT SPST
+        start: 2026-01-05
+        end: 2026-03-31
+        status: completed
+        repositories:
+          - name: BERT training via SPST
+            url: https://github.com/premananda-cloud/Bert_training_via_SPST
+          - name: BERT SPST paper
+            url: https://github.com/premananda-cloud/BERT_SPST_Paper
+
+      - id: agere
+        title: AGERE
+        start: 2026-08-25
+        end: null
+        status: ongoing
+        repositories:
+          - name: AGERE
+            url: https://github.com/premananda-cloud/AGERE
+          - name: AGERE training
+            url: https://github.com/premananda-cloud/AGERE_training
+          - name: AGERE sims
+            url: https://github.com/premananda-cloud/AGERE_sims
+
+  - id: cryptography
+    label: Cryptography
+    projects:
+      - id: cypheraegis
+        title: CypherAegis
+        start: 2026-04-02
+        end: 2026-04-02
+        status: completed
+        repositories:
+          - name: CypherAegis
+            url: https://github.com/premananda-cloud/CypherAegis
+
+      - id: medledger
+        title: MedLedger
+        start: 2026-06-18
+        end: 2026-07-15
+        status: completed
+        repositories:
+          - name: MedLedger
+            url: https://github.com/premananda-cloud/MedLedger
+
+      - id: envoix
+        title: EnvoiX
+        start: 2026-06-29
+        end: null
+        status: paused
+        repositories:
+          - name: EnvoiX
+            url: https://github.com/Athelis-Systems/Envoi_X
+
+  - id: production-apps
+    label: Production Applications
+    projects:
+      - id: campuswari
+        title: CampusWari
+        start: 2026-10-18
+        end: null
+        status: ongoing
+        repositories:
+          - name: CampusWari
+            url: https://github.com/Stoic-Monkie/CampusWari
+
+  - id: utilities
+    label: Utilities
+    projects:
+      - id: vin
+        title: vin
+        start: 2026-11-05
+        end: null
+        status: ongoing
+        repositories:
+          - name: vin
+            url: https://github.com/premananda-cloud/vin
+
+  - id: econometrics
+    label: Econometrics
+    projects:
+      - id: price-latency
+        title: Price Latency
+        start: 2026-07-30
+        end: 2026-09-25
+        status: completed
+        repositories:
+          - name: price-latency
+            url: https://github.com/premananda-cloud/price_latency
